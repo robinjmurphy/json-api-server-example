@@ -6,10 +6,10 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "start": "node index.js",
-    "watch": "nodemon -e js,json",
+    "start": "NODE_ENV=dev node index.js",
+    "watch": "NODE_ENV=dev nodemon -e js,json",
     "coverage": "istanbul cover _mocha -- -R dot",
-    "postest": "npm run lint",
+    "posttest": "npm run lint",
     "create-database": "createdb postgres-json-api-example",
     "create-table": "psql -d postgres-json-api-example -f db/createTable.sql"
   },
@@ -43,6 +43,7 @@
     "boom-to-json-api": "^1.0.0",
     "express": "^4.13.3",
     "joi": "^7.1.0",
+    "lodash": "^3.10.1",
     "massive": "^2.1.0",
     "winston": "^2.1.1"
   }

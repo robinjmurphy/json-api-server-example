@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const errorHandler = require('./lib/errorHandler');
 const toResourceObject = require('./lib/toResourceObject');
 const Person = require('./lib/person');
+const _ = require('lodash');
 
 const app = module.exports = express();
 const port = process.env.PORT || 3000;
@@ -31,7 +32,9 @@ app.get('/people', (req, res, next) => {
 });
 
 app.post('/people', bodyParser.json(), (req, res, next) => {
-  Person.create(req.body.data.attributes, (err, person) => {
+  const attributes = _.get(req, 'body.data.attributes');
+
+  Person.create(attributes, (err, person) => {
     if (err) return next(err);
 
     res.status(201).json({ data: toResourceObject(person) });
