@@ -45,6 +45,14 @@ describe('GET /people', () => {
         done();
       });
   });
+
+  it('uses the JSON API content type', (done) => {
+    request(app)
+      .get('/people')
+      .expect(200)
+      .expect('Content-Type', /application\/vnd\.api\+json/)
+      .end(done);
+  });
 });
 
 describe('GET /people/:id', () => {
