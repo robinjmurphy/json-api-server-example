@@ -55,6 +55,45 @@ describe('GET /people', () => {
   });
 });
 
+describe('POST /people', () => {
+  beforeEach(setupDatabase);
+
+  it('creates a person', (done) => {
+    const body = {
+      data: {
+        type: 'people',
+        attributes: {
+          name: 'Fred'
+        }
+      }
+    };
+
+    async.series([
+      function createPerson(cb) {
+        request(app)
+          .post('/people')
+          .send(body)
+          .expect(201)
+          .end((err, res) => {
+            assert.ifError(err);
+            assert.equal(res.body.data.type, 'people');
+            assert.equal(res.body.data.id, 4);
+            assert.equal(res.body.data.attributes.name, 'Fred');
+            cb();
+          });
+      },
+      function verifyPerson(cb) {
+        massive.people.findOne(4, (err, person) => {
+          assert.ifError(err);
+          assert.ok(person);
+          assert.equal(person.data.name, 'Fred');
+          cb();
+        });
+      }
+    ], done);
+  });
+});
+
 describe('GET /people/:id', () => {
   beforeEach(setupDatabase);
 
