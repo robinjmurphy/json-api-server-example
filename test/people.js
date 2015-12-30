@@ -4,10 +4,7 @@ const assert = require('assert');
 const app = require('..');
 const request = require('supertest');
 const async = require('async');
-const Massive = require('massive');
-const connectionString = require('../config').connectionString;
-
-const massive = Massive.connectSync({ connectionString });
+const db = require('../lib/db');
 
 const ron = { name: 'Ron' };
 const ginny = { name: 'Ginny' };
@@ -16,10 +13,10 @@ const arthur = { name: 'Arthur' };
 function setupDatabase(cb) {
   async.series([
     function createTable(done) {
-      massive.createTable(done);
+      db.createTable(done);
     },
     function insertData(done) {
-      massive.people.insert([
+      db.people.insert([
         { data: ron },
         { data: ginny },
         { data: arthur}
@@ -83,7 +80,7 @@ describe('POST /people', () => {
           });
       },
       function verifyPerson(cb) {
-        massive.people.findOne(4, (err, person) => {
+        db.people.findOne(4, (err, person) => {
           assert.ifError(err);
           assert.ok(person);
           assert.equal(person.data.name, 'Fred');

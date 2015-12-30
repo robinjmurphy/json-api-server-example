@@ -5,7 +5,7 @@ const logger = require('winston');
 const Boom = require('boom');
 const bodyParser = require('body-parser');
 const errorHandler = require('./lib/errorHandler');
-const db = require('./lib/db');
+const People = require('./lib/people');
 const toResourceObject = require('./lib/toResourceObject');
 
 const app = module.exports = express();
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/people', (req, res, next) => {
-  db.getPeople((err, people) => {
+  People.all((err, people) => {
     if (err) return next(err);
 
     res.json({ data: people.map(toResourceObject) });
@@ -31,7 +31,7 @@ app.get('/people', (req, res, next) => {
 });
 
 app.post('/people', bodyParser.json(), (req, res, next) => {
-  db.createPerson(req.body.data.attributes, (err, person) => {
+  People.create(req.body.data.attributes, (err, person) => {
     if (err) return next(err);
 
     res.status(201).json({ data: toResourceObject(person) });
@@ -41,7 +41,7 @@ app.post('/people', bodyParser.json(), (req, res, next) => {
 app.get('/people/:id', (req, res, next) => {
   const id = req.params.id;
 
-  db.getPerson(id, (err, person) => {
+  People.get(id, (err, person) => {
     if (err) return next(err);
     if (!person) return next();
 
