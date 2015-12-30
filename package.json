@@ -1,0 +1,44 @@
+{
+  "name": "postgres-json-api-example",
+  "version": "1.0.0",
+  "description": "An example JSON API server using Postgres and Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint .",
+    "start": "node index.js",
+    "watch": "nodemon -e js,json",
+    "create-database": "createdb postgres-json-api-example",
+    "create-table": "psql -d postgres-json-api-example -f db/createTable.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robinjmurphy/postgres-json-api-example.git"
+  },
+  "keywords": [
+    "postgres",
+    "json",
+    "api",
+    "example"
+  ],
+  "author": "robin@robinmurphy.co.uk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robinjmurphy/postgres-json-api-example/issues"
+  },
+  "homepage": "https://github.com/robinjmurphy/postgres-json-api-example#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "mocha": "^2.3.4",
+    "nodemon": "^1.8.1",
+    "supertest": "^1.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "boom": "^3.1.1",
+    "express": "^4.13.3",
+    "joi": "^7.1.0",
+    "massive": "^2.1.0",
+    "winston": "^2.1.1"
+  }
+}
