@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS people;
 
 CREATE TABLE people (
   id SERIAL PRIMARY KEY,
-  data JSONB
+  attributes JSONB
 );
 
-CREATE INDEX idx_people ON people USING GIN(data jsonb_path_ops);
+CREATE INDEX idx_people ON people USING GIN(attributes jsonb_path_ops);

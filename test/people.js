@@ -17,9 +17,9 @@ function setupDatabase(cb) {
     },
     function insertData(done) {
       db.people.insert([
-        { data: ron },
-        { data: ginny },
-        { data: arthur}
+        { attributes: ron },
+        { attributes: ginny },
+        { attributes: arthur}
       ], done);
     }
   ], cb);
@@ -83,7 +83,7 @@ describe('POST /people', () => {
         db.people.findOne(4, (err, person) => {
           assert.ifError(err);
           assert.ok(person);
-          assert.equal(person.data.name, 'Fred');
+          assert.equal(person.attributes.name, 'Fred');
           cb();
         });
       }
