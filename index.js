@@ -1,12 +1,12 @@
 'use strict';
 
 const express = require('express');
-const logger = require('winston');
 const Boom = require('boom');
 const bodyParser = require('body-parser');
 const errorHandler = require('./lib/errorHandler');
 const toResourceObject = require('./lib/toResourceObject');
 const Person = require('./lib/person');
+const logger = require('./lib/logger');
 const _ = require('lodash');
 
 const app = module.exports = express();
