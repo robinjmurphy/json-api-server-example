@@ -7,7 +7,7 @@ const async = require('async');
 const Massive = require('massive');
 const connectionString = require('../config').connectionString;
 
-const massive = Massive.connectSync({ connectionString : connectionString });
+const massive = Massive.connectSync({ connectionString });
 
 const ron = { name: 'Ron' };
 const ginny = { name: 'Ginny' };

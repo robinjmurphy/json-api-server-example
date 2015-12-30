@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "node index.js",
     "watch": "nodemon -e js,json",
+    "postest": "npm run lint",
     "create-database": "createdb postgres-json-api-example",
     "create-table": "psql -d postgres-json-api-example -f db/createTable.sql"
   },

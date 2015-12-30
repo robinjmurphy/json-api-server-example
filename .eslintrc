@@ -12,6 +12,7 @@
     "semi": 2,
     "strict": [2, "global"],
     "arrow-parens": 2,
-    "prefer-arrow-callback": 2
+    "prefer-arrow-callback": 2,
+    "object-shorthand": 2
   }
 }
