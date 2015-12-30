@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "node index.js",
     "watch": "nodemon -e js,json",
+    "coverage": "istanbul cover _mocha -- -R dot",
     "postest": "npm run lint",
     "create-database": "createdb postgres-json-api-example",
     "create-table": "psql -d postgres-json-api-example -f db/createTable.sql"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "async": "^1.5.0",
     "eslint": "^1.10.3",
+    "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
     "nodemon": "^1.8.1",
     "supertest": "^1.1.0"
