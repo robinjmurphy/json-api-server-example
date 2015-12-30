@@ -1,0 +1,3 @@
+{
+  "connectionString": "postgres://localhost/postgres-json-api-example"
+}
