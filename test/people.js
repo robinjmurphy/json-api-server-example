@@ -46,3 +46,27 @@ describe('GET /people', () => {
       });
   });
 });
+
+describe('GET /people/:id', () => {
+  beforeEach(setupDatabase);
+
+  it('returns a person', (done) => {
+    request(app)
+      .get('/people/2')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        const person = res.body.data;
+        assert.equal(person.type, 'people');
+        assert.equal(person.id, '2');
+        assert.equal(person.attributes.name, 'Ginny');
+        done();
+      });
+  });
+
+  it('returns a 404 when a person cannot be found', (done) => {
+    request(app)
+      .get('/people/1000')
+      .expect(404, done);
+  });
+});

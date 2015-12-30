@@ -5,6 +5,7 @@ const logger = require('winston');
 const Boom = require('boom');
 const errorHandler = require('./lib/errorHandler');
 const db = require('./lib/db');
+const toResourceObject = require('./lib/toResourceObject');
 
 const app = module.exports = express();
 const port = process.env.PORT || 3000;
@@ -24,9 +25,18 @@ app.get('/people', (req, res, next) => {
   db.getPeople((err, people) => {
     if (err) return next(err);
 
-    res.json({
-      data: people
-    });
+    res.json({ data: people.map(toResourceObject) });
+  });
+});
+
+app.get('/people/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  db.getPerson(id, (err, person) => {
+    if (err) return next(err);
+    if (!person) return next();
+
+    res.json({ data: toResourceObject(person) });
   });
 });
 
