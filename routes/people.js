@@ -16,11 +16,7 @@ const createSchema = Joi.object().keys({
 });
 
 function fromResourceObject(resourceObject) {
-  const person = Object.assign({}, resourceObject.attributes);
-
-  if (resourceObject.id) person.id = resourceObject.id;
-
-  return person;
+  return Object.assign({}, resourceObject.attributes);
 }
 
 function toResourceObject(person) {
