@@ -15,10 +15,6 @@ const createSchema = Joi.object().keys({
   })
 });
 
-function fromResourceObject(resourceObject) {
-  return Object.assign({}, resourceObject.attributes);
-}
-
 function toResourceObject(person) {
   return {
     type: 'people',
@@ -39,9 +35,9 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', bodyParser.json(), validate(createSchema), (req, res, next) => {
-  const data = fromResourceObject(req.body.data);
+  const attributes = req.body.data.attributes;
 
-  Person.create(data, (err, person) => {
+  Person.create(attributes, (err, person) => {
     if (err) return next(err);
 
     res.status(201).json({ data: toResourceObject(person) });
