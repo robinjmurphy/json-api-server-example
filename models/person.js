@@ -20,7 +20,7 @@ module.exports.all = function all(cb) {
   db.people.find(cb);
 };
 
-module.exports.delete = function deletePerson(id, cb) {
+module.exports.destroy = function destroy(id, cb) {
   db.people.destroy({ id }, cb);
 };
 
