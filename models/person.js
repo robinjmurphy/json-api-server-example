@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./db');
+const db = require('../lib/db');
 
 module.exports.find = function get(id, cb) {
   db.people.findOne({ id }, cb);
