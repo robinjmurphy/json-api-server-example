@@ -55,4 +55,14 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  Person.delete(id, (err) => {
+    if (err) return next(err);
+
+    res.sendStatus(204);
+  });
+});
+
 module.exports = router;

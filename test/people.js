@@ -133,3 +133,24 @@ describe('GET /people/:id', () => {
       .expect(404, done);
   });
 });
+
+describe('DELETE /people/:id', () => {
+  beforeEach(setupDatabase);
+
+  it('deletes a person', (done) => {
+    async.series([
+      function deletePerson(cb) {
+        request(app)
+          .delete('/people/1')
+          .expect(204, cb);
+      },
+      function verifyDelete(cb) {
+        db.people.findOne(1, (err, person) => {
+          assert.ifError(err);
+          assert.strictEqual(person, undefined);
+          cb();
+        });
+      }
+    ], done);
+  });
+});
