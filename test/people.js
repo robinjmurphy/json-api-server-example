@@ -134,6 +134,34 @@ describe('GET /people/:id', () => {
   });
 });
 
+describe('PATCH /people/:id', () => {
+  it('updates a person', (done) => {
+    async.series([
+      function updatePerson(cb) {
+        request(app)
+          .patch('/people/1')
+          .send({
+            data: {
+              type: 'people',
+              id: 1,
+              attributes: {
+                name: 'Bill'
+              }
+            }
+          })
+          .expect(200, cb);
+      },
+      function verifyUpdate(cb) {
+        db.people.find(1, (err, person) => {
+          assert.ifError(err);
+          assert.equal(person.name, 'Bill');
+          cb();
+        });
+      }
+    ], done);
+  });
+});
+
 describe('DELETE /people/:id', () => {
   beforeEach(setupDatabase);
 

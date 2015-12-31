@@ -2,18 +2,12 @@
 
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const Joi = require('joi');
 const _ = require('lodash');
 const Person = require('../models/person');
 const validate = require('../lib/validator');
 const baseURL = require('../config').baseURL;
-
-const createSchema = Joi.object().keys({
-  data: Joi.object().keys({
-    type: 'people',
-    attributes: Person.schema
-  })
-});
+const createSchema = require('../schemas/createPerson');
+const updateSchema = require('../schemas/updatePerson');
 
 function toResourceObject(person) {
   return {
@@ -48,6 +42,18 @@ router.get('/:id', (req, res, next) => {
   const id = req.params.id;
 
   Person.find(id, (err, person) => {
+    if (err) return next(err);
+    if (!person) return next();
+
+    res.json({ data: toResourceObject(person) });
+  });
+});
+
+router.patch('/:id', bodyParser.json(), validate(updateSchema), (req, res, next) => {
+  const id = req.body.data.id;
+  const attributes = req.body.data.attributes;
+
+  Person.update(id, attributes, (err, person) => {
     if (err) return next(err);
     if (!person) return next();
 
