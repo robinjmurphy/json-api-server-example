@@ -2,12 +2,25 @@
 
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const baseURL = require('../config').baseURL;
-const Person = require('../models/person');
+const Joi = require('joi');
 const _ = require('lodash');
+const Person = require('../models/person');
+const validate = require('../lib/validator');
+const baseURL = require('../config').baseURL;
+
+const createSchema = Joi.object().keys({
+  data: Joi.object().keys({
+    type: 'people',
+    attributes: Person.schema
+  })
+});
 
 function fromResourceObject(resourceObject) {
-  return Object.assign({}, resourceObject.attributes);
+  const person = Object.assign({}, resourceObject.attributes);
+
+  if (resourceObject.id) person.id = resourceObject.id;
+
+  return person;
 }
 
 function toResourceObject(person) {
@@ -29,7 +42,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/', bodyParser.json(), (req, res, next) => {
+router.post('/', bodyParser.json(), validate(createSchema), (req, res, next) => {
   const data = fromResourceObject(req.body.data);
 
   Person.create(data, (err, person) => {

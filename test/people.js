@@ -85,6 +85,29 @@ describe('POST /people', () => {
       }
     ], done);
   });
+
+  it('returns a 400 error when the body is incorrectly formatted', (done) => {
+    request(app)
+      .post('/people')
+      .send({
+        not: 'JSON API'
+      })
+      .expect(400, done);
+  });
+
+  it('returns a 400 error when the person is invalid', (done) => {
+    request(app)
+      .post('/people')
+      .send({
+        data: {
+          type: 'people',
+          attributes: {
+            foo: 'bar'
+          }
+        }
+      })
+      .expect(400, done);
+  });
 });
 
 describe('GET /people/:id', () => {
