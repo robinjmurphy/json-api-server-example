@@ -2,7 +2,7 @@
 
 > An example [JSON API](http://jsonapi.org/) server using Postgres and Express
 
-This project implements an API that complies with the JSON API [specification](http://jsonapi.org/format/) from scratch. I created it to help me learn the JSON API format. It uses the [MassiveJS](https://github.com/robconery/massive-js) library to access a [Postgres](http://www.postgresql.org/) database.
+Created to help me learn the JSON API [format](http://jsonapi.org/format/). It uses the [MassiveJS](https://github.com/robconery/massive-js) library to access a [Postgres](http://www.postgresql.org/) database.
 
 ## Installation
 
