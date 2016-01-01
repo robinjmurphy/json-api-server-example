@@ -6,9 +6,9 @@ const request = require('supertest');
 const async = require('async');
 const db = require('../lib/db');
 
-const ron = { name: 'Ron' };
-const ginny = { name: 'Ginny' };
-const arthur = { name: 'Arthur' };
+const ron = { name: 'Ron', surname: 'Weasley' };
+const ginny = { name: 'Ginny', surname: 'Weasley' };
+const arthur = { name: 'Arthur', surname: 'Weasley' };
 
 function setupDatabase(cb) {
   async.series([
@@ -35,6 +35,7 @@ describe('GET /people', () => {
         assert.equal(people[0].type, 'people');
         assert.equal(people[0].id, '1');
         assert.equal(people[0].attributes.name, 'Ron');
+        assert.equal(people[0].attributes.surname, 'Weasley');
         done();
       });
   });
@@ -56,7 +57,8 @@ describe('POST /people', () => {
       data: {
         type: 'people',
         attributes: {
-          name: 'Fred'
+          name: 'Fred',
+          surname: 'Weasley'
         }
       }
     };
@@ -72,6 +74,7 @@ describe('POST /people', () => {
             assert.equal(res.body.data.type, 'people');
             assert.equal(res.body.data.id, 4);
             assert.equal(res.body.data.attributes.name, 'Fred');
+            assert.equal(res.body.data.attributes.surname, 'Weasley');
             cb();
           });
       },
@@ -123,6 +126,7 @@ describe('GET /people/:id', () => {
         assert.equal(person.type, 'people');
         assert.equal(person.id, '2');
         assert.equal(person.attributes.name, 'Ginny');
+        assert.equal(person.attributes.surname, 'Weasley');
         done();
       });
   });
@@ -143,18 +147,19 @@ describe('PATCH /people/:id', () => {
           .send({
             data: {
               type: 'people',
-              id: 1,
+              id: 2,
               attributes: {
-                name: 'Bill'
+                surname: 'Potter'
               }
             }
           })
           .expect(200, cb);
       },
       function verifyUpdate(cb) {
-        db.people.find(1, (err, person) => {
+        db.people.find(2, (err, person) => {
           assert.ifError(err);
-          assert.equal(person.name, 'Bill');
+          assert.equal(person.name, 'Ginny');
+          assert.equal(person.surname, 'Potter');
           cb();
         });
       }

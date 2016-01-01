@@ -13,7 +13,7 @@ function toResourceObject(person) {
   return {
     type: 'people',
     id: person.id,
-    attributes: _.pick(person, 'name'),
+    attributes: _.omit(person, 'id'),
     links: {
       self: `${baseURL}/people/${person.id}`
     }
