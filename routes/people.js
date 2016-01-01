@@ -21,7 +21,7 @@ function toResourceObject(person) {
 }
 
 router.get('/', validate('query', querySchema), (req, res, next) => {
-  const opts = _.pick(req.query, 'filter');
+  const opts = req.query;
 
   Person.all(opts, (err, people) => {
     if (err) return next(err);

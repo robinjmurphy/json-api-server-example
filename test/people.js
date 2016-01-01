@@ -77,11 +77,69 @@ describe('GET /people', () => {
       .expect(400, done);
   });
 
+  it('supports sorting by id', (done) => {
+    request(app)
+      .get('/people?sort=id')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        assert.equal(res.body.data[0].id, 1);
+        assert.equal(res.body.data[1].id, 2);
+        assert.equal(res.body.data[2].id, 3);
+        done();
+      });
+  });
+
+  it('supports sorting by name', (done) => {
+    request(app)
+      .get('/people?sort=name')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        assert.equal(res.body.data[0].attributes.name, 'Arthur');
+        assert.equal(res.body.data[1].attributes.name, 'Ginny');
+        assert.equal(res.body.data[2].attributes.name, 'Ron');
+        done();
+      });
+  });
+
+  it('supports sorting by created', (done) => {
+    request(app)
+      .get('/people?sort=created')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        assert.equal(res.body.data[0].id, 1);
+        assert.equal(res.body.data[1].id, 2);
+        assert.equal(res.body.data[2].id, 3);
+        done();
+      });
+  });
+
+  it('supports reverse sorting', (done) => {
+    request(app)
+      .get('/people?sort=-id')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        assert.equal(res.body.data[0].id, 3);
+        assert.equal(res.body.data[1].id, 2);
+        assert.equal(res.body.data[2].id, 1);
+        done();
+      });
+  });
+
+  it('returns a 400 error when passed an invalid sort', (done) => {
+    request(app)
+      .get('/people?sort=-hairColour')
+      .expect(400, done);
+  });
+
   it('supports page-based pagination');
-  it('supports sorting by id');
-  it('supports sorting by name');
-  it('supports sorting by created');
-  it('supports reverse sorting');
 });
 
 describe('POST /people', () => {
