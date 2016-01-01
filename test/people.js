@@ -48,144 +48,150 @@ describe('GET /people', () => {
       .end(done);
   });
 
-  it('supports filtering by name', (done) => {
-    request(app)
-      .get('/people?filter[name]=Ron')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 1);
-        assert.equal(res.body.data[0].attributes.name, 'Ron');
-        done();
-      });
+  describe('Filtering', () => {
+    it('supports filtering by name', (done) => {
+      request(app)
+        .get('/people?filter[name]=Ron')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 1);
+          assert.equal(res.body.data[0].attributes.name, 'Ron');
+          done();
+        });
+    });
+
+    it('supports filtering by surname', (done) => {
+      request(app)
+        .get('/people?filter[surname]=Weasley')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          done();
+        });
+    });
+
+    it('returns an error when passed an invalid filter', (done) => {
+      request(app)
+        .get('/people?filter[hairColour]=orange')
+        .expect(400, done);
+    });
   });
 
-  it('supports filtering by surname', (done) => {
-    request(app)
-      .get('/people?filter[surname]=Weasley')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        done();
-      });
+  describe('Sorting', () => {
+    it('supports sorting by id', (done) => {
+      request(app)
+        .get('/people?sort=id')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          assert.equal(res.body.data[0].id, 1);
+          assert.equal(res.body.data[1].id, 2);
+          assert.equal(res.body.data[2].id, 3);
+          done();
+        });
+    });
+
+    it('supports sorting by name', (done) => {
+      request(app)
+        .get('/people?sort=name')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          assert.equal(res.body.data[0].attributes.name, 'Arthur');
+          assert.equal(res.body.data[1].attributes.name, 'Ginny');
+          assert.equal(res.body.data[2].attributes.name, 'Ron');
+          done();
+        });
+    });
+
+    it('supports sorting by created', (done) => {
+      request(app)
+        .get('/people?sort=created')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          assert.equal(res.body.data[0].id, 1);
+          assert.equal(res.body.data[1].id, 2);
+          assert.equal(res.body.data[2].id, 3);
+          done();
+        });
+    });
+
+    it('supports reverse sorting', (done) => {
+      request(app)
+        .get('/people?sort=-name')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          assert.equal(res.body.data[0].attributes.name, 'Ron');
+          assert.equal(res.body.data[1].attributes.name, 'Ginny');
+          assert.equal(res.body.data[2].attributes.name, 'Arthur');
+          done();
+        });
+    });
+
+    it('returns a 400 error when passed an invalid sort', (done) => {
+      request(app)
+        .get('/people?sort=-hairColour')
+        .expect(400, done);
+    });
+
+    it('supports sorting by multiple fields', (done) => {
+      request(app)
+        .get('/people?sort=surname,-name')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 3);
+          assert.equal(res.body.data[0].attributes.name, 'Ron');
+          assert.equal(res.body.data[1].attributes.name, 'Ginny');
+          assert.equal(res.body.data[2].attributes.name, 'Arthur');
+          done();
+        });
+    });
   });
 
-  it('returns an error when passed an invalid filter', (done) => {
-    request(app)
-      .get('/people?filter[hairColour]=orange')
-      .expect(400, done);
-  });
+  describe('Pagination', () => {
+    it('supports page-based pagination', (done) => {
+      request(app)
+        .get('/people?page[number]=2&page[size]=1')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 1);
+          assert.equal(res.body.data[0].id, 2);
+          done();
+        });
+    });
 
-  it('supports sorting by id', (done) => {
-    request(app)
-      .get('/people?sort=id')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].id, 1);
-        assert.equal(res.body.data[1].id, 2);
-        assert.equal(res.body.data[2].id, 3);
-        done();
-      });
-  });
+    it('returns pagination links', (done) => {
+      request(app)
+        .get('/people?page[number]=2&page[size]=1')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.ok(res.body.links);
+          done();
+        });
+    });
 
-  it('supports sorting by name', (done) => {
-    request(app)
-      .get('/people?sort=name')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].attributes.name, 'Arthur');
-        assert.equal(res.body.data[1].attributes.name, 'Ginny');
-        assert.equal(res.body.data[2].attributes.name, 'Ron');
-        done();
-      });
-  });
-
-  it('supports sorting by created', (done) => {
-    request(app)
-      .get('/people?sort=created')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].id, 1);
-        assert.equal(res.body.data[1].id, 2);
-        assert.equal(res.body.data[2].id, 3);
-        done();
-      });
-  });
-
-  it('supports reverse sorting', (done) => {
-    request(app)
-      .get('/people?sort=-name')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].attributes.name, 'Ron');
-        assert.equal(res.body.data[1].attributes.name, 'Ginny');
-        assert.equal(res.body.data[2].attributes.name, 'Arthur');
-        done();
-      });
-  });
-
-  it('returns a 400 error when passed an invalid sort', (done) => {
-    request(app)
-      .get('/people?sort=-hairColour')
-      .expect(400, done);
-  });
-
-  it('supports sorting by multiple fields', (done) => {
-    request(app)
-      .get('/people?sort=surname,-name')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].attributes.name, 'Ron');
-        assert.equal(res.body.data[1].attributes.name, 'Ginny');
-        assert.equal(res.body.data[2].attributes.name, 'Arthur');
-        done();
-      });
-  });
-
-  it('supports page-based pagination', (done) => {
-    request(app)
-      .get('/people?page[number]=2&page[size]=1')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 1);
-        assert.equal(res.body.data[0].id, 2);
-        done();
-      });
-  });
-
-  it('returns pagination links', (done) => {
-    request(app)
-      .get('/people?page[number]=2&page[size]=1')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.ok(res.body.links);
-        done();
-      });
-  });
-
-  it('supports pagination and sorting together', (done) => {
-    request(app)
-      .get('/people?page[number]=2&page[size]=2&sort=surname,name')
-      .expect(200)
-      .end((err, res) => {
-        assert.ifError(err);
-        assert.equal(res.body.data.length, 1);
-        assert.equal(res.body.data[0].attributes.name, 'Ron');
-        done();
-      });
+    it('supports pagination and sorting together', (done) => {
+      request(app)
+        .get('/people?page[number]=2&page[size]=2&sort=surname,name')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 1);
+          assert.equal(res.body.data[0].attributes.name, 'Ron');
+          done();
+        });
+    });
   });
 });
 
