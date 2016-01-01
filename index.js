@@ -3,6 +3,7 @@
 const express = require('express');
 const Boom = require('boom');
 const errorHandler = require('./lib/errorHandler');
+const contentType = require('./lib/contentType');
 const people = require('./routes/people');
 const logger = require('./lib/logger');
 
@@ -11,10 +12,7 @@ const port = process.env.PORT || 3000;
 
 app.disable('x-powered-by');
 
-app.use((req, res, next) => {
-  res.set('content-type', 'application/vnd.api+json');
-  next();
-});
+app.use(contentType);
 
 app.get('/', (req, res) => {
   res.redirect('/people');
