@@ -1,13 +1,24 @@
 'use strict';
 
 const router = require('express').Router();
-const bodyParser = require('body-parser');
 const _ = require('lodash');
+const Boom = require('boom');
 const Person = require('../models/person');
 const validate = require('../lib/validator');
 const baseURL = require('../config').baseURL;
 const createSchema = require('../schemas/createPerson');
 const updateSchema = require('../schemas/updatePerson');
+const bodyParser = require('body-parser').json({
+  type: 'application/vnd.api+json'
+});
+
+function validateContentType(req, res, next) {
+  if (!req.is('application/vnd.api+json')) {
+    return next(Boom.unsupportedMediaType('Content-Type must be set to application/vnd.api+json'));
+  }
+
+  next();
+}
 
 function toResourceObject(person) {
   return {
@@ -28,7 +39,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/', bodyParser.json(), validate(createSchema), (req, res, next) => {
+router.post('/', validateContentType, bodyParser, validate(createSchema), (req, res, next) => {
   const attributes = req.body.data.attributes;
 
   Person.create(attributes, (err, person) => {
@@ -49,7 +60,7 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-router.patch('/:id', bodyParser.json(), validate(updateSchema), (req, res, next) => {
+router.patch('/:id', validateContentType, bodyParser, validate(updateSchema), (req, res, next) => {
   const id = req.body.data.id;
   const attributes = req.body.data.attributes;
 

@@ -7,6 +7,6 @@ module.exports = Joi.object().keys({
   data: Joi.object().keys({
     type: Joi.string().valid('people').required(),
     id: Joi.number().integer().required(),
-    attributes: person
-  })
+    attributes: person.required()
+  }).required()
 });

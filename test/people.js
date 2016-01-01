@@ -67,7 +67,8 @@ describe('POST /people', () => {
       function createPerson(cb) {
         request(app)
           .post('/people')
-          .send(body)
+          .set('content-type', 'application/vnd.api+json')
+          .send(JSON.stringify(body))
           .expect(201)
           .end((err, res) => {
             assert.ifError(err);
@@ -92,24 +93,33 @@ describe('POST /people', () => {
   it('returns a 400 error when the body is incorrectly formatted', (done) => {
     request(app)
       .post('/people')
-      .send({
+      .set('content-type', 'application/vnd.api+json')
+      .send(JSON.stringify({
         not: 'JSON API'
-      })
+      }))
       .expect(400, done);
   });
 
   it('returns a 400 error when the person is invalid', (done) => {
     request(app)
       .post('/people')
-      .send({
+      .set('content-type', 'application/vnd.api+json')
+      .send(JSON.stringify({
         data: {
           type: 'people',
           attributes: {
             foo: 'bar'
           }
         }
-      })
+      }))
       .expect(400, done);
+  });
+
+  it('returns a 415 error when the incorrect content type is used', (done) => {
+    request(app)
+      .post('/people')
+      .send({})
+      .expect(415, done);
   });
 });
 
@@ -144,7 +154,8 @@ describe('PATCH /people/:id', () => {
       function updatePerson(cb) {
         request(app)
           .patch('/people/1')
-          .send({
+          .set('content-type', 'application/vnd.api+json')
+          .send(JSON.stringify({
             data: {
               type: 'people',
               id: 2,
@@ -152,7 +163,7 @@ describe('PATCH /people/:id', () => {
                 surname: 'Potter'
               }
             }
-          })
+          }))
           .expect(200, cb);
       },
       function verifyUpdate(cb) {
