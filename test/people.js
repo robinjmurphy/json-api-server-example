@@ -190,6 +190,10 @@ describe('GET /people', () => {
         .end((err, res) => {
           assert.ifError(err);
           assert.ok(res.body.links);
+          assert.equal(res.body.links.first, 'http://127.0.0.1:3000/people/?page[number]=1&page[size]=1&sort=id');
+          assert.equal(res.body.links.last, 'http://127.0.0.1:3000/people/?page[number]=3&page[size]=1&sort=id');
+          assert.equal(res.body.links.prev, 'http://127.0.0.1:3000/people/?page[number]=1&page[size]=1&sort=id');
+          assert.equal(res.body.links.next, 'http://127.0.0.1:3000/people/?page[number]=3&page[size]=1&sort=id');
           done();
         });
     });
