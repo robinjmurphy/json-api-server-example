@@ -9,8 +9,9 @@
     "start": "NODE_ENV=dev node index.js",
     "watch": "NODE_ENV=dev nodemon -e js,json",
     "coverage": "istanbul cover _mocha -- -R dot",
+    "pretest": "npm run create-database && npm run create-table",
     "posttest": "npm run lint",
-    "create-database": "createdb postgres-json-api-example",
+    "create-database": "createdb postgres-json-api-example || true",
     "create-table": "psql -d postgres-json-api-example -f db/createTable.sql"
   },
   "repository": {
