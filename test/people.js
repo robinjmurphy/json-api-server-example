@@ -145,7 +145,17 @@ describe('GET /people', () => {
       .expect(400, done);
   });
 
-  it('supports page-based pagination');
+  it('supports page-based pagination', (done) => {
+    request(app)
+      .get('/people?page[number]=2&page[size]=1')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 1);
+        assert.equal(res.body.data[0].id, 2);
+        done();
+      });
+  });
 });
 
 describe('POST /people', () => {
