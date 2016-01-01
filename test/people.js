@@ -139,6 +139,12 @@ describe('GET /people', () => {
       .expect(400, done);
   });
 
+  it('does not support multiple sorts', (done) => {
+    request(app)
+      .get('/people?sort=surname,name')
+      .expect(400, done);
+  });
+
   it('supports page-based pagination');
 });
 
