@@ -165,9 +165,20 @@ describe('GET /people', () => {
       });
   });
 
+  it('returns pagination links', (done) => {
+    request(app)
+      .get('/people?page[number]=2&page[size]=1')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.ok(res.body.links);
+        done();
+      });
+  });
+
   it('supports pagination and sorting together', (done) => {
     request(app)
-      .get('/people?page[number]=2&page[size]=2&sort=name')
+      .get('/people?page[number]=2&page[size]=2&sort=surname,name')
       .expect(200)
       .end((err, res) => {
         assert.ifError(err);

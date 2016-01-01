@@ -1,5 +1,6 @@
 'use strict';
 
+const async = require('async');
 const db = require('../lib/db');
 const optionsFromQuery = require('../lib/optionsFromQuery');
 
@@ -19,7 +20,16 @@ module.exports.all = function all(query, cb) {
   const constraints = query.filter;
   const options = optionsFromQuery(query);
 
-  db.people.find(constraints, options, cb);
+  async.parallel({
+    people: function getData(done){
+      db.people.find(constraints, options, done);
+    },
+    count: function getCount(done) {
+      db.people.count(constraints, done);
+    }
+  }, (err, results) => {
+    cb(err, results.people, results.count);
+  });
 };
 
 module.exports.destroy = function destroy(id, cb) {

@@ -4,6 +4,7 @@ const router = require('express').Router();
 const _ = require('lodash');
 const Person = require('../models/person');
 const validate = require('../lib/validator');
+const paginationLinks = require('../lib/paginationLinks');
 const baseURL = require('../config').baseURL;
 const createSchema = require('../schemas/createPerson');
 const updateSchema = require('../schemas/updatePerson');
@@ -23,10 +24,13 @@ function toResourceObject(person) {
 router.get('/', validate('query', querySchema), (req, res, next) => {
   const opts = req.query;
 
-  Person.all(opts, (err, people) => {
+  Person.all(opts, (err, people, total) => {
     if (err) return next(err);
 
-    res.json({ data: people.map(toResourceObject) });
+    res.json({
+      links: paginationLinks(req, total),
+      data: people.map(toResourceObject)
+    });
   });
 });
 
