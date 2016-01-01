@@ -10,16 +10,10 @@ npm install
 
 ## Usage
 
-You'll need [Postgres](http://www.postgresql.org/) installed and running. You can then create the database:
+You'll need [Postgres](http://www.postgresql.org/) installed and running. You can then setup the database:
 
 ```
-npm run create-database
-```
-
-Then create the table:
-
-```
-npm run create-table
+npm run setup-database
 ```
 
 Start the server:
