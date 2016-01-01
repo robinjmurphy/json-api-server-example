@@ -14,8 +14,10 @@ module.exports.update = function update(id, data, cb) {
   db.people.update({ id }, data, cb);
 };
 
-module.exports.all = function all(cb) {
-  db.people.find(cb);
+module.exports.all = function all(opts, cb) {
+  const constraints = opts.filter;
+
+  db.people.find(constraints, cb);
 };
 
 module.exports.destroy = function destroy(id, cb) {

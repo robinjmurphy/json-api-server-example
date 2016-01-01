@@ -7,6 +7,7 @@ const validate = require('../lib/validator');
 const baseURL = require('../config').baseURL;
 const createSchema = require('../schemas/createPerson');
 const updateSchema = require('../schemas/updatePerson');
+const querySchema = require('../schemas/queryPeople');
 
 function toResourceObject(person) {
   return {
@@ -19,15 +20,17 @@ function toResourceObject(person) {
   };
 }
 
-router.get('/', (req, res, next) => {
-  Person.all((err, people) => {
+router.get('/', validate('query', querySchema), (req, res, next) => {
+  const opts = _.pick(req.query, 'filter');
+
+  Person.all(opts, (err, people) => {
     if (err) return next(err);
 
     res.json({ data: people.map(toResourceObject) });
   });
 });
 
-router.post('/', validate(createSchema), (req, res, next) => {
+router.post('/', validate('body', createSchema), (req, res, next) => {
   const attributes = req.body.data.attributes;
 
   Person.create(attributes, (err, person) => {
@@ -48,7 +51,7 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-router.patch('/:id', validate(updateSchema), (req, res, next) => {
+router.patch('/:id', validate('body', updateSchema), (req, res, next) => {
   const id = req.body.data.id;
   const attributes = req.body.data.attributes;
 

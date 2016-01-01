@@ -48,8 +48,35 @@ describe('GET /people', () => {
       .end(done);
   });
 
-  it('supports filtering by name');
-  it('supports filtering by surname');
+  it('supports filtering by name', (done) => {
+    request(app)
+      .get('/people?filter[name]=Ron')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 1);
+        assert.equal(res.body.data[0].attributes.name, 'Ron');
+        done();
+      });
+  });
+
+  it('supports filtering by surname', (done) => {
+    request(app)
+      .get('/people?filter[surname]=Weasley')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        done();
+      });
+  });
+
+  it('returns an error when passed an invalid filter', (done) => {
+    request(app)
+      .get('/people?filter[hairColour]=orange')
+      .expect(400, done);
+  });
+
   it('supports page-based pagination');
   it('supports sorting by id');
   it('supports sorting by name');
