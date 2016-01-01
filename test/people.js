@@ -139,10 +139,18 @@ describe('GET /people', () => {
       .expect(400, done);
   });
 
-  it('does not support multiple sorts', (done) => {
+  it('supports sorting by multiple fields', (done) => {
     request(app)
-      .get('/people?sort=surname,name')
-      .expect(400, done);
+      .get('/people?sort=surname,-name')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 3);
+        assert.equal(res.body.data[0].attributes.name, 'Ron');
+        assert.equal(res.body.data[1].attributes.name, 'Ginny');
+        assert.equal(res.body.data[2].attributes.name, 'Arthur');
+        done();
+      });
   });
 
   it('supports page-based pagination', (done) => {
