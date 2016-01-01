@@ -136,12 +136,6 @@ describe('GET /people', () => {
         });
     });
 
-    it('returns a 400 error when passed an invalid sort', (done) => {
-      request(app)
-        .get('/people?sort=-hairColour')
-        .expect(400, done);
-    });
-
     it('supports sorting by multiple fields', (done) => {
       request(app)
         .get('/people?sort=surname,-name')
@@ -154,6 +148,12 @@ describe('GET /people', () => {
           assert.equal(res.body.data[2].attributes.name, 'Arthur');
           done();
         });
+    });
+
+    it('returns a 400 error when passed an invalid sort', (done) => {
+      request(app)
+        .get('/people?sort=-hairColour')
+        .expect(400, done);
     });
   });
 
