@@ -156,6 +156,18 @@ describe('GET /people', () => {
         done();
       });
   });
+
+  it('supports pagination and sorting together', (done) => {
+    request(app)
+      .get('/people?page[number]=2&page[size]=2&sort=name')
+      .expect(200)
+      .end((err, res) => {
+        assert.ifError(err);
+        assert.equal(res.body.data.length, 1);
+        assert.equal(res.body.data[0].attributes.name, 'Ron');
+        done();
+      });
+  });
 });
 
 describe('POST /people', () => {
