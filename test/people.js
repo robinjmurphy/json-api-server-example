@@ -72,6 +72,19 @@ describe('GET /people', () => {
         });
     });
 
+    it('supports filtering with multiple values', (done) => {
+      request(app)
+        .get('/people?filter[name]=Ron,Ginny')
+        .expect(200)
+        .end((err, res) => {
+          assert.ifError(err);
+          assert.equal(res.body.data.length, 2);
+          assert.equal(res.body.data[0].attributes.name, 'Ron');
+          assert.equal(res.body.data[1].attributes.name, 'Ginny');
+          done();
+        });
+    });
+
     it('returns a 400 error when passed an invalid filter', (done) => {
       request(app)
         .get('/people?filter[hairColour]=orange')

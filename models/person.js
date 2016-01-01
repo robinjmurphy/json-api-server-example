@@ -3,6 +3,7 @@
 const async = require('async');
 const db = require('../lib/db');
 const optionsFromQuery = require('../lib/optionsFromQuery');
+const constraintsFromQuery = require('../lib/constraintsFromQuery');
 
 module.exports.find = function get(id, cb) {
   db.people.findOne({ id }, cb);
@@ -17,7 +18,7 @@ module.exports.update = function update(id, data, cb) {
 };
 
 module.exports.all = function all(query, cb) {
-  const constraints = query.filter;
+  const constraints = constraintsFromQuery(query);
   const options = optionsFromQuery(query);
 
   async.parallel({
