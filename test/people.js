@@ -72,7 +72,7 @@ describe('GET /people', () => {
         });
     });
 
-    it('returns an error when passed an invalid filter', (done) => {
+    it('returns a 400 error when passed an invalid filter', (done) => {
       request(app)
         .get('/people?filter[hairColour]=orange')
         .expect(400, done);
