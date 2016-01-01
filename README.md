@@ -1,6 +1,6 @@
-# postgres-json-api-example
+# json-api-server-example
 
-> An example JSON API compliant server using Postgres and express
+> An example [JSON API](http://jsonapi.org/) server using Postgres and Express
 
 ## Installation
 

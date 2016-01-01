@@ -1,4 +1,4 @@
 {
-  "connectionString": "postgres://localhost/postgres-json-api-example",
+  "connectionString": "postgres://localhost/json-api-server-example",
   "baseURL": "http://127.0.0.1:3000"
 }

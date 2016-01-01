@@ -1,5 +1,5 @@
 {
-  "name": "postgres-json-api-example",
+  "name": "json-api-server-example",
   "version": "1.0.0",
   "description": "An example JSON API server using Postgres and Express",
   "main": "index.js",
@@ -11,13 +11,14 @@
     "coverage": "istanbul cover _mocha -- -R dot",
     "pretest": "npm run setup-database",
     "posttest": "npm run lint",
-    "create-database": "createdb postgres-json-api-example || true",
-    "create-table": "psql -d postgres-json-api-example -f db/createTable.sql",
+    "psql": "psql -d json-api-server-example",
+    "create-database": "createdb json-api-server-example || true",
+    "create-table": "psql -d json-api-server-example -f db/createTable.sql",
     "setup-database": "npm run create-database && npm run create-table"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robinjmurphy/postgres-json-api-example.git"
+    "url": "git+https://github.com/robinjmurphy/json-api-server-example.git"
   },
   "keywords": [
     "postgres",
@@ -28,9 +29,9 @@
   "author": "robin@robinmurphy.co.uk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/robinjmurphy/postgres-json-api-example/issues"
+    "url": "https://github.com/robinjmurphy/json-api-server-example/issues"
   },
-  "homepage": "https://github.com/robinjmurphy/postgres-json-api-example#readme",
+  "homepage": "https://github.com/robinjmurphy/json-api-server-example#readme",
   "devDependencies": {
     "async": "^1.5.0",
     "eslint": "^1.10.3",
