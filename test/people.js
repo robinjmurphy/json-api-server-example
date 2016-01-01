@@ -121,14 +121,14 @@ describe('GET /people', () => {
 
   it('supports reverse sorting', (done) => {
     request(app)
-      .get('/people?sort=-id')
+      .get('/people?sort=-name')
       .expect(200)
       .end((err, res) => {
         assert.ifError(err);
         assert.equal(res.body.data.length, 3);
-        assert.equal(res.body.data[0].id, 3);
-        assert.equal(res.body.data[1].id, 2);
-        assert.equal(res.body.data[2].id, 1);
+        assert.equal(res.body.data[0].attributes.name, 'Ron');
+        assert.equal(res.body.data[1].attributes.name, 'Ginny');
+        assert.equal(res.body.data[2].attributes.name, 'Arthur');
         done();
       });
   });

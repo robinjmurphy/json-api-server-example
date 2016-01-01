@@ -5,7 +5,11 @@ const db = require('../lib/db');
 function optionsFromQuery(query) {
   const options = {};
 
-  if (query.sort) options.order = query.sort;
+  if (query.sort) {
+    const reverse = /^-/.test(query.sort);
+    options.order = query.sort.replace(/^-/g, '');
+    options.order += reverse ? ' desc' : ' asc';
+  }
 
   return options;
 }
