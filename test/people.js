@@ -44,7 +44,7 @@ describe('GET /people', () => {
     request(app)
       .get('/people')
       .expect(200)
-      .expect('Content-Type', /application\/vnd\.api\+json/)
+      .expect('content-type', /application\/vnd\.api\+json/)
       .end(done);
   });
 
@@ -233,6 +233,7 @@ describe('POST /people', () => {
           .set('content-type', 'application/vnd.api+json')
           .send(JSON.stringify(body))
           .expect(201)
+          .expect('location', 'http://127.0.0.1:3000/people/4')
           .end((err, res) => {
             assert.ifError(err);
             assert.equal(res.body.data.type, 'people');

@@ -40,7 +40,9 @@ router.post('/', validate('body', createSchema), (req, res, next) => {
   Person.create(attributes, (err, person) => {
     if (err) return next(err);
 
-    res.status(201).json({ data: toResourceObject(person) });
+    res.status(201)
+      .set('Location', `${baseURL}/people/${person.id}`)
+      .json({ data: toResourceObject(person) });
   });
 });
 
