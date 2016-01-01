@@ -335,6 +335,39 @@ describe('PATCH /people/:id', () => {
       }
     ], done);
   });
+
+  it('returns a 400 error when the request body is invalid', (done) => {
+    request(app)
+      .patch('/people/1')
+      .set('content-type', 'application/vnd.api+json')
+      .send(JSON.stringify({
+        foo: 'bar'
+      }))
+      .expect(400, done);
+  });
+
+  it('returns a 400 error when the person is invalid', (done) => {
+    request(app)
+      .patch('/people/1')
+      .set('content-type', 'application/vnd.api+json')
+      .send(JSON.stringify({
+        data: {
+          type: 'people',
+          id: 1,
+          attributes: {
+            hairColour: 'orange'
+          }
+        }
+      }))
+      .expect(400, done);
+  });
+
+  it('returns a 415 when the incorrect content type is used', (done) => {
+    request(app)
+      .post('/people')
+      .send({})
+      .expect(415, done);
+  });
 });
 
 describe('DELETE /people/:id', () => {
