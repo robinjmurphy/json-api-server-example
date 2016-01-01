@@ -2,7 +2,6 @@
 
 const router = require('express').Router();
 const _ = require('lodash');
-const Boom = require('boom');
 const Person = require('../models/person');
 const validate = require('../lib/validator');
 const baseURL = require('../config').baseURL;
