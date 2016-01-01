@@ -14,7 +14,9 @@ module.exports.create = function create(data, cb) {
 };
 
 module.exports.update = function update(id, data, cb) {
-  db.people.update({ id }, data, cb);
+  const person = Object.assign({}, data, { id });
+
+  db.people.update(person, cb);
 };
 
 module.exports.all = function all(query, cb) {

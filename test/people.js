@@ -100,9 +100,9 @@ describe('GET /people', () => {
         .end((err, res) => {
           assert.ifError(err);
           assert.equal(res.body.data.length, 3);
-          assert.equal(res.body.data[0].id, 1);
-          assert.equal(res.body.data[1].id, 2);
-          assert.equal(res.body.data[2].id, 3);
+          assert.equal(res.body.data[0].id, '1');
+          assert.equal(res.body.data[1].id, '2');
+          assert.equal(res.body.data[2].id, '3');
           done();
         });
     });
@@ -128,9 +128,9 @@ describe('GET /people', () => {
         .end((err, res) => {
           assert.ifError(err);
           assert.equal(res.body.data.length, 3);
-          assert.equal(res.body.data[0].id, 1);
-          assert.equal(res.body.data[1].id, 2);
-          assert.equal(res.body.data[2].id, 3);
+          assert.equal(res.body.data[0].id, '1');
+          assert.equal(res.body.data[1].id, '2');
+          assert.equal(res.body.data[2].id, '3');
           done();
         });
     });
@@ -178,7 +178,7 @@ describe('GET /people', () => {
         .end((err, res) => {
           assert.ifError(err);
           assert.equal(res.body.data.length, 1);
-          assert.equal(res.body.data[0].id, 2);
+          assert.equal(res.body.data[0].id, '2');
           done();
         });
     });

@@ -13,7 +13,7 @@ const querySchema = require('../schemas/queryPeople');
 function toResourceObject(person) {
   return {
     type: 'people',
-    id: person.id,
+    id: person.id.toString(),
     attributes: _.omit(person, 'id'),
     links: {
       self: `${baseURL}/people/${person.id}`
