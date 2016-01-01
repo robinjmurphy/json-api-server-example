@@ -47,6 +47,14 @@ describe('GET /people', () => {
       .expect('Content-Type', /application\/vnd\.api\+json/)
       .end(done);
   });
+
+  it('supports filtering by name');
+  it('supports filtering by surname');
+  it('supports page-based pagination');
+  it('supports sorting by id');
+  it('supports sorting by name');
+  it('supports sorting by created');
+  it('supports reverse sorting');
 });
 
 describe('POST /people', () => {
