@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "5"
+  - "4"
+env:
+  - DB=postgres://postgres@localhost/json-api-server-example
+services:
+  - postgresql
+before_script:
+  - createdb json-api-server-example -U postgres
+  - psql -d json-api-server-example -f db/createTable.sql -U postgres
