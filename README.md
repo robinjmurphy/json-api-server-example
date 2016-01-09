@@ -1,5 +1,7 @@
 # json-api-server-example
 
+[![Build Status](https://travis-ci.org/robinjmurphy/json-api-server-example.svg?branch=master)](https://travis-ci.org/robinjmurphy/json-api-server-example)
+
 > An example [JSON API](http://jsonapi.org/) server using Postgres and Express
 
 Created to help me learn the JSON API [format](http://jsonapi.org/format/). It uses the [MassiveJS](https://github.com/robconery/massive-js) library to access a [Postgres](http://www.postgresql.org/) database.
